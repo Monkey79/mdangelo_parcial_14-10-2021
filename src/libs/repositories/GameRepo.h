@@ -9,5 +9,8 @@
 
 #include "../entities/GameEntity.h"
 
+void gr_getGameById(GameEntity* gmLst, int gmLn, int gmId, GameEntity* gmEntAux);
+void gr_showAGame(GameEntity gmEnt);
+int gr_getGameIdByName(GameEntity* gmLst, int gmLn, char* gmName);
 
 #endif /* LIBS_REPOSITORIES_GAMEREPO_H_ */

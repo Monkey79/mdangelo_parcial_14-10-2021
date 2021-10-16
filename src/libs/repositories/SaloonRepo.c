@@ -35,6 +35,16 @@ void sr_showASaloon(SaloonEntity slEnt){
 	printf("-salon.id=%d | salon.nombre=%s | salon.domicilio=%s | salon.tipo=%s\n",slEnt.slId,slEnt.slName,slEnt.slAddress,slTypeStr);
 }
 
+void sr_getSaloonById(SaloonEntity* slLst,int sLn,int slId,SaloonEntity* slEntAux){
+	int cont = TRUE;
+	for(int i=0;i<sLn && cont;i++){
+		if(!(slLst+i)->slEmpty && (slLst+i)->slId==slId){
+			*slEntAux = *(slLst+i);
+			cont = FALSE;
+		}
+	}
+}
+
 void sr_getSaloonDescByType(int slType,char* slTypeStr){
 	if(slType==1)
 		strcpy(slTypeStr,"Shoping");

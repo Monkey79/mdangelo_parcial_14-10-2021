@@ -28,7 +28,12 @@ void bsn_startMyCompanyApp(void){
 	int arId=16;
 	int debug = TRUE;
 
-	GameEntity gmList[GAME_TOP] = {{1,"game_1"},{2,"game_2"},{3,"game_3"},{4,"game_4"},{5,"game_5"},{6,"game_6"}};
+	GameEntity gmList[GAME_TOP] = {{1,"game_1",FALSE},
+								   {2,"game_2",FALSE},
+								   {3,"game_3",FALSE},
+								   {4,"game_4",FALSE},
+								   {5,"game_5",FALSE},
+								   {6,"game_6",FALSE}};
 
 	SaloonEntity slList[SALON_TOP] = {{1,"salon_1","salon_1_dr",1,FALSE},
 									   {2,"salon_2","salon_2_dr",1,FALSE},
@@ -39,6 +44,7 @@ void bsn_startMyCompanyApp(void){
 									   {7,"salon_7","salon_7_dr",2,FALSE},
 									   {8,"salon_8","salon_8_dr",2,FALSE}};
 
+	//arc.id | arc.nacionalidasd | arc.tipo-sonido | arc.cant-jug | arc.cap-fichas | arc.salon-id |	arc.juego-id | arc.empty
 	ArcadeEntity arList[ARCADE_TOP] = {{1,"nacion_1",1,2,100,1,1,FALSE},
 										{2,"nacion_2",1,2,100,1,2,FALSE},
 										{3,"nacion_3",2,4,100,2,3,FALSE},
@@ -54,13 +60,14 @@ void bsn_startMyCompanyApp(void){
 										{13,"nacion_13",1,5,100,7,1,FALSE},
 										{14,"nacion_14",1,5,100,7,2,FALSE},
 										{15,"nacion_15",2,1,200,8,3,FALSE},
-										{16,"nacion_16",2,1,200,8,4,FALSE}};
+										{16,"nacion_16",2,1,200,8,4,FALSE},
+										{17,"nacion_17",2,1,200,8,4,FALSE}};
 
 
 
 	if(debug){
 		sr_initSaloonListHardCd(slList,8,SALON_TOP);
-		ar_initArcadeListHardCd(arList,16,ARCADE_TOP);
+		ar_initArcadeListHardCd(arList,18,ARCADE_TOP);
 	}else{
 		sr_initSaloonList(slList, SALON_TOP);
 		ar_initArcadeList(arList, ARCADE_TOP);
@@ -129,20 +136,20 @@ void _checkUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* sl
 void _createShowReportsMenu(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList){
 	int rpUsrSlc;
 
-	char* reportMnOpts[STR_10] = {"\t1-Salones mas 4 arcades",
-								  "\t2-Arcades mas 2 jugadores",
-								  "\t3-Listar info salon (con argades y juegos)",
-								  "\t4-Listar arcade de un salon",
-								  "\t5-Salon c/mas cant arcades",
-								  "\t6-Eliminar arcade",
-								  "\t7-Salon recaudacion",
-								  "\t0-Volver al menu principal"};
+	char* reportMnOpts[STR_10] = {"\t 1-Salones mas 4 arcades [A]",
+								  "\t 2-Arcades mas 2 jugadores [B]",
+								  "\t 3-Listar info salon (por id) [C]",
+								  "\t 4-Listar arcade-juego de un salon (por id) [D]",
+								  "\t 5-Salon c/mas cant arcades [E]",
+								  "\t 6-Salon recaudacion [F]",
+								  "\t 7-Juego cantidad (en arcades) [G]",
+								  "\t 0-Volver al menu principal"};
 	do{
-		printf("\t-----      Inormes        ------\n");
-		str_showStringMatrix(reportMnOpts, 8);
+		printf("\t-----      Informes        ------\n");
+		str_showStringMatrix(reportMnOpts,8);
 		__fpurge(stdin);
 		scanf("%d", &rpUsrSlc);
-		if(nmb_validateIntByRank(rpUsrSlc,1,8)){
+		if(nmb_validateIntByRank(rpUsrSlc,1,7)){
 			_checkReportUsrSelection(gmList,arList,slList,rpUsrSlc);
 		}
 	}while(rpUsrSlc>=1 && rpUsrSlc<=7);
@@ -151,26 +158,39 @@ void _createShowReportsMenu(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity
 void _checkReportUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int rpUsrSlc){
 	switch (rpUsrSlc) {
 		case 1:
-			printf("-1-Salones mas 4 arcades-\n");
+			printf("-***========================================***-\n");
 			srv_showSaloonExceedArc(slList,SALON_TOP,arList,ARCADE_TOP,4);
+			printf("-***========================================***-\n");
 			break;
 		case 2:
-			printf("-2-Arcades mas 2 jugadores-\n");
+			printf("-***========================================***-\n");
+			srv_showArcadeMorePlayerThan(slList,SALON_TOP,arList,ARCADE_TOP,2, gmList, GAME_TOP);
+			printf("-***========================================***-\n");
 			break;
 		case 3:
-			printf("-3.Listar info salon (con argades y juegos)-\n");
+			printf("-***========================================***-\n");
+			srv_showSaloonInfo(slList, SALON_TOP, arList, ARCADE_TOP);
+			printf("-***========================================***-\n");
 			break;
 		case 4:
-			printf("-4-Listar arcade de un salon-\n");
+			printf("-***========================================***-\n");
+			srv_showArcadeAndGameInfoBySalonId(slList,SALON_TOP,arList,ARCADE_TOP,gmList,GAME_TOP);
+			printf("-***========================================***-\n");
 			break;
 		case 5:
-			printf("-5-Salon c/mas cant arcades-\n");
+			printf("-***========================================***-\n");
+			srv_showSaloonWithMaxArcade(slList,SALON_TOP,arList,ARCADE_TOP);
+			printf("-***========================================***-\n");
 			break;
 		case 6:
-			printf("-6-Eliminar arcade-\n");
+			printf("-***========================================***-\n");
+			srv_showSaloonIncome(slList,SALON_TOP,arList,ARCADE_TOP);
+			printf("-***========================================***-\n");
 			break;
 		case 7:
-			printf("-7-Salon recaudacion-\n");
+			printf("-***========================================***-\n");
+			srv_showAmountGameInArcades(arList,ARCADE_TOP, gmList, GAME_TOP);
+			printf("-***========================================***-\n");
 			break;
 		default:
 			break;

@@ -13,6 +13,7 @@
 typedef struct{
 	int gmId;
 	char gmDesc[STR_63];
+	int gmEmpty;
 }GameEntity;
 
 #endif /* LIBS_ENTITIES_GAMEENTITY_H_ */

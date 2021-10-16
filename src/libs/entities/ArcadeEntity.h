@@ -13,8 +13,8 @@
 typedef struct{
 	int arId; //AI
 	char arNationality[STR_50];
-	int arSoundType;  //1=Mono 2=Stereo
-	int arPlayerAmount;
+	int arSndTp;  //1=Mono 2=Stereo
+	int arPlyAmt;
 	int arCoinsCap;
 
 
