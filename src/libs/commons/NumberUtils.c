@@ -21,9 +21,13 @@ float nmb_getFloatInput(char* strMssg){
 
 int nmb_getIntInput(char* strMssg){
 	int iNm = 0;
-	printf("%s\n", strMssg);
-	__fpurge(stdin);
-	scanf("%d",&iNm);
+
+	do{
+		printf("%s\n", strMssg);
+		__fpurge(stdin);
+		scanf("%d",&iNm);
+	}while(iNm<0);
+
 	return iNm;
 }
 int nmb_getInputByRank(char* strMssg,int from, int until){

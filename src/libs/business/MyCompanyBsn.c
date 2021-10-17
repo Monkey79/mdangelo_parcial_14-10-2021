@@ -19,14 +19,14 @@
 #define SALON_TOP 100
 #define ARCADE_TOP 1000
 
-void _checkUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int usrSlct,int slId, int arId);
+void _checkUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int usrSlct,int *slId, int *arId);
 void _createShowReportsMenu(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList);
 void _checkReportUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int rpUsrSlc);
 
 void bsn_startMyCompanyApp(void){
 	int slId=8; //ultimo id creado
 	int arId=16;
-	int debug = TRUE;
+	int debug = FALSE;
 
 	GameEntity gmList[GAME_TOP] = {{1,"game_1",FALSE},
 								   {2,"game_2",FALSE},
@@ -35,7 +35,7 @@ void bsn_startMyCompanyApp(void){
 								   {5,"game_5",FALSE},
 								   {6,"game_6",FALSE}};
 
-	SaloonEntity slList[SALON_TOP] = {{1,"salon_1","salon_1_dr",1,FALSE},
+	/*SaloonEntity slList[SALON_TOP] = {{1,"salon_1","salon_1_dr",1,FALSE},
 									   {2,"salon_2","salon_2_dr",1,FALSE},
 									   {3,"salon_3","salon_3_dr",2,FALSE},
 									   {4,"salon_4","salon_4_dr",2,FALSE},
@@ -61,7 +61,10 @@ void bsn_startMyCompanyApp(void){
 										{14,"nacion_14",1,5,100,7,2,FALSE},
 										{15,"nacion_15",2,1,200,8,3,FALSE},
 										{16,"nacion_16",2,1,200,8,4,FALSE},
-										{17,"nacion_17",2,1,200,8,4,FALSE}};
+										{17,"nacion_17",2,1,200,8,4,FALSE}};*/
+
+	SaloonEntity slList[SALON_TOP];
+	ArcadeEntity arList[ARCADE_TOP];
 
 
 
@@ -69,8 +72,12 @@ void bsn_startMyCompanyApp(void){
 		sr_initSaloonListHardCd(slList,8,SALON_TOP);
 		ar_initArcadeListHardCd(arList,18,ARCADE_TOP);
 	}else{
+		slId = 0;
+		arId = 0;
 		sr_initSaloonList(slList, SALON_TOP);
 		ar_initArcadeList(arList, ARCADE_TOP);
+		gr_initGameListHardCd(gmList, GAME_TOP,6, GAME_TOP);
+
 	}
 
 	char* menuOpts[STR_10] = {"1-Alta salon",
@@ -93,37 +100,37 @@ void bsn_startMyCompanyApp(void){
 		__fpurge(stdin);
 		scanf("%d", &usrSlct);
 		if(nmb_validateIntByRank(usrSlct,1,10)){
-			_checkUsrSelection(gmList,arList,slList,usrSlct,slId,arId);
+			_checkUsrSelection(gmList,arList,slList,usrSlct,&slId,&arId);
 		}
 	}while(usrSlct>=1 && usrSlct<=10);
 }
 
 //==========Private
-void _checkUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int usrSlct,int slId, int arId){
+void _checkUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int usrSlct,int *slId, int *arId){
 	switch (usrSlct) {
 		case 1:
-			printf("-alta salon-");
+			srv_createSaloon(slList, SALON_TOP, slId);
 			break;
 		case 2:
-			printf("-eliminar salon-");
+			srv_deleteSaloonById(slList, SALON_TOP, arList,ARCADE_TOP);
 			break;
 		case 3:
-			printf("-imprimir salones-");
+			srv_showAllSaloons(slList, SALON_TOP);
 			break;
 		case 4:
-			printf("-crear arcade-");
+			srv_createArcade(arList, ARCADE_TOP, slList, SALON_TOP, gmList, GAME_TOP, arId);
 			break;
 		case 5:
-			printf("-modificar arcade-");
+			srv_updateArcade(arList, ARCADE_TOP, gmList, GAME_TOP);
 			break;
 		case 6:
-			printf("-eliminar arcade-");
+			srv_deleteArcade(arList, ARCADE_TOP,slList, SALON_TOP, gmList, GAME_TOP);
 			break;
 		case 7:
-			printf("-imprimir arcades-");
+			srv_showAllArcadesComplete(arList, ARCADE_TOP, slList, SALON_TOP, gmList, GAME_TOP);
 			break;
 		case 8:
-			printf("-imprimir juegos-");
+			srv_showAllGamesInArcades(arList, ARCADE_TOP, gmList, GAME_TOP);
 			break;
 		case 9:
 			_createShowReportsMenu(gmList,arList,slList);
