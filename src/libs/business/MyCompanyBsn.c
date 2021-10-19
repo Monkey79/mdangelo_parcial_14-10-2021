@@ -24,9 +24,10 @@ void _createShowReportsMenu(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity
 void _checkReportUsrSelection(GameEntity* gmList,ArcadeEntity* arList,SaloonEntity* slList,int rpUsrSlc);
 
 void bsn_startMyCompanyApp(void){
+	int debug = TRUE;
+
 	int slId=8; //ultimo id creado
-	int arId=16;
-	int debug = FALSE;
+	int arId=17;
 
 	GameEntity gmList[GAME_TOP] = {{1,"game_1",FALSE},
 								   {2,"game_2",FALSE},
@@ -35,7 +36,30 @@ void bsn_startMyCompanyApp(void){
 								   {5,"game_5",FALSE},
 								   {6,"game_6",FALSE}};
 
-	/*SaloonEntity slList[SALON_TOP] = {{1,"salon_1","salon_1_dr",1,FALSE},
+	/*------------------------------Atencion-----------------------------------
+	 * Para probar los informes:
+     * Si se quiere probar los informes SIN la necesidad de recurrir a los abms
+	 * para crear los salones y los arcades se debe hacer lo siguiente:
+	 *
+	 * 		  1-descomentar la seccion "Informes" : en esta seccion hay 2 listas
+	 * 		  slList y arList harcodeadas con un set de datos para probar los informes
+	 *
+	 * 		  2-comentar las listas de la seccion "Abms" : en esta seccion estan las mismas
+	 * 		  lista pero vacias.
+	 *
+	 * 		  3-setear la variable debug en TRUE
+	 *
+	 * 		  4-Atencion: Si se agregan nuevos elementos a la lista de salones, arcades y/o juegos controlar
+	 * 		  los indices de la funciones: sr_initSaloonListHardCd, ar_initArcadeListHardCd y
+	 * 		  gr_initGameListHardCd
+	 *
+	 * 		  =>Para probar los Abms a partir de listas vacias se debe hacer lo opuesto a lo mencionado anteriormente
+	 * 		  AUN asi con el set de datos harcodeados SE PUEDE hacer ingresos manuales.
+	 *
+	 * --------------------------------------------------------------------------------------*/
+
+	/*----------------------------Iformes (datos harcodeados)----------------------------------*/
+	SaloonEntity slList[SALON_TOP] = {{1,"salon_1","salon_1_dr",1,FALSE},
 									   {2,"salon_2","salon_2_dr",1,FALSE},
 									   {3,"salon_3","salon_3_dr",2,FALSE},
 									   {4,"salon_4","salon_4_dr",2,FALSE},
@@ -61,24 +85,27 @@ void bsn_startMyCompanyApp(void){
 										{14,"nacion_14",1,5,100,7,2,FALSE},
 										{15,"nacion_15",2,1,200,8,3,FALSE},
 										{16,"nacion_16",2,1,200,8,4,FALSE},
-										{17,"nacion_17",2,1,200,8,4,FALSE}};*/
+										{17,"nacion_17",2,1,200,8,4,FALSE}};
+	/*---------------------------------------------------------------------------------------------*/
 
-	SaloonEntity slList[SALON_TOP];
-	ArcadeEntity arList[ARCADE_TOP];
 
+	/*-------Abms---------*/
+	//SaloonEntity slList[SALON_TOP];
+	//ArcadeEntity arList[ARCADE_TOP];
+	/*--------------------*/
 
 
 	if(debug){
-		sr_initSaloonListHardCd(slList,8,SALON_TOP);
-		ar_initArcadeListHardCd(arList,18,ARCADE_TOP);
+		sr_initSaloonListHardCd(slList,8,SALON_TOP); //como el ulitmo elem de la lista es el 8 (indice 7) => inicializo a partir del indice 8
+		ar_initArcadeListHardCd(arList,17,ARCADE_TOP); //como el ulitmo elem de la lista es el 17 (indice 16) => inicializo a partir del indice 17
 	}else{
 		slId = 0;
 		arId = 0;
 		sr_initSaloonList(slList, SALON_TOP);
 		ar_initArcadeList(arList, ARCADE_TOP);
-		gr_initGameListHardCd(gmList, GAME_TOP,6, GAME_TOP);
-
 	}
+
+	gr_initGameListHardCd(gmList, GAME_TOP,6, GAME_TOP); //como el ulitmo elem de la lista es el 6 (indice 5) => inicializo a partir del indice 6
 
 	char* menuOpts[STR_10] = {"1-Alta salon",
 							  "2-Eliminar salon",

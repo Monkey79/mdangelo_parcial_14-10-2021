@@ -274,14 +274,17 @@ void srv_showAllArcadesComplete(ArcadeEntity* arList, int arLn, SaloonEntity* sl
 
 void srv_showAllGamesInArcades(ArcadeEntity* arList, int arLn, GameEntity* gmLst, int gmLn){
 	printf("--los siguientes juegos estan en todos los arcades--\n");
+	int math=FALSE;
 	for(int i=0; i<gmLn; i++){
 		if(!(gmLst->gmEmpty)){
 			if(ar_isGameInArcadeList(arList, arLn, (gmLst+i)->gmId)){
+				math = TRUE;
 				gr_showAGame(*(gmLst+i));
 			}
 		}
 
 	}
+	if(!math) printf("--lamentablemente ningun juego de los disponibles esta en TODOS los arcades---\n");
 }
 
 //----Informes
